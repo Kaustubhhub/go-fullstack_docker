@@ -101,7 +101,19 @@ func getUsers(db *sql.DB) http.HandlerFunc {
 }
 
 func createUsers(db *sql.DB) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {}
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		id := vars["id"]
+
+		var u User
+		err := db.QueryRow("SELECT * from users WHERE id = $1", id).Scan(&u.Id, &u.Name, &u.Email)
+		if err != nil {
+			w.WriteHeader(http.StatusNotFound)
+			log.Fatal(err)
+		}
+
+		json.NewEncoder(w).Encode(u)
+	}
 }
 func updateUser(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {}
