@@ -43,7 +43,7 @@ func main() {
 	enhancedRouter := enableCORS(jsonContentTypeMiddleware(router))
 
 	//start server
-	log.Fatal(http.ListenAndServe(":8080", enhancedRouter))
+	log.Fatal(http.ListenAndServe(":8000", enhancedRouter))
 }
 
 func enableCORS(next http.Handler) http.Handler {
